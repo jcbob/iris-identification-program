@@ -1,5 +1,5 @@
 # iris-identification-program
-A project for the "Introduction to Biometrics" class on the University of Science and Technology in Wrocław
+This is a repository dedicated for my project titled 'Iris Identification Program' developed as part of the curriculum for the 'Introduction to Biometrics' class at the University of Science and Technology in Wrocław.
 
 ---
 - Date begun: 04.04.2024
