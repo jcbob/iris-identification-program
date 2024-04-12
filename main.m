@@ -4,13 +4,15 @@ image = im2double(image);
 % figure()
 % imshow(image)
 
-% Define Gaussian filter kernel
-sigma = 15;  % Standard deviation
-filter_size = 5*sigma;  % Filter size
-kernel = fspecial('gaussian', filter_size, sigma);
+% % Define Gaussian filter kernel
+% sigma = 15;  % Standard deviation
+% filter_size = 5*sigma;  % Filter size
+% kernel = fspecial('gaussian', filter_size, sigma);
+% 
+% % Apply Gaussian filter
+% filtered_image = imfilter(image, kernel, 'conv', 'replicate');
 
-% Apply Gaussian filter
-filtered_image = imfilter(image, kernel, 'conv', 'replicate');
+
 
 image = filtered_image;
 tmp_image = filtered_image;
