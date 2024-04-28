@@ -26,11 +26,14 @@ result = horizontal + vertical;
 result = sqrt(result);
 % result = sqrt(result);
 
-validation(:,:,1) = mat2gray(image_gr); % Normalize the grayscale image
-validation(:,:,2) = mat2gray(image_gr);
-validation(:,:,3) = mat2gray(image_gr + 10.*result); 
+% validation(:,:,1) = mat2gray(image_gr); % Normalize the grayscale image
+% validation(:,:,2) = mat2gray(image_gr);
+% validation(:,:,3) = mat2gray(image_gr + 10.*result); 
+% figure()
+% imshow(validation)
+
 figure()
-imshow(validation)
+imshow(result)
 
 
 
