@@ -1,10 +1,10 @@
 function [outImage, shift, Gh] = detect_edges(inImage, filter_len, rgb2gray_true)
 
-    % Gh = [-ones(1, filter_len), 0, ones(1, filter_len)];
-    Gh = [-1,-1,-1,-1,0,1,1,1,1];
+    Gh = [-ones(1, filter_len), 0, ones(1, filter_len)];
+    % Gh = [-1,-1,-1,-1,0,1,1,1,1];
     Gv = Gh';
 
-    if rgb2gray_true
+    if rgb2gray_true == true
         img_gray = rgb2gray(inImage);
     else
         img_gray = inImage;
@@ -29,7 +29,7 @@ function [outImage, shift, Gh] = detect_edges(inImage, filter_len, rgb2gray_true
 
     % Wycinanie obszaru brzegowego
     [rows, cols, ~] = size(result);
-    border_width = filter_len;
+    border_width = filter_len+1;
     result = imcrop(result, [border_width border_width cols-(2*border_width) rows-(2*border_width)]);
 
     % Obliczanie przesunięcia

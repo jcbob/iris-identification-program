@@ -19,7 +19,7 @@ for r = r_min:r_max
     for col = 1:cols
         for row = 1:rows
             if circle(row,col)>0.1
-                for theta = 0:0.1*pi:2*pi             
+                for theta = 0.1:0.1*pi:2*pi             
                     a = round(col - r*cos(theta));
                     b = round(row - r*sin(theta));
                     if a>= 1 && a <= cols && b >= 1 && b <= rows
