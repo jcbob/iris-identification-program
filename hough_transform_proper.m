@@ -1,17 +1,22 @@
 close all;
 clear all;
 
-img = imread("images/iris3.jpg");
+img = imread("images/iris1.jpg");
+img_dec = decrease_resolution(img, 0.5);
 % img = generate_Aeye(130, 130*0.3, 600, 400);
 
-% img_edges = detect_edges(img, false);
-[img_edges, shift, Gh] = detect_edges(img, 4, true);
+% figure(1)
+% imshow(img)
 
+[img_edges, shift] = detect_edges(img_dec, 4, true);
+
+% figure(1)
+% imshow(img_edges)
 % figure(11)
 % mesh(img_edges)
 
-r_min = 1000;
-r_max = 1410;
+r_min = 129;
+r_max = 150;
 
 [rows, cols] = size(img_edges);
 
@@ -39,29 +44,16 @@ r_max_real = r_min + r_max_index - 1;
 x_max = x_max + shift(1);
 y_max = y_max + shift(2);
 figure(41)
-imshow(img);
+imshow(img_dec);
+title(['r=', num2str(r_max_real), ', x=', num2str(x_max), ', y=', num2str(y_max)]);
 hold on;
 viscircles([x_max, y_max], r_max_real, 'EdgeColor', 'r');
 hold off;
 
-% % Znajdź maksymalną wartość w macierzy HS oraz jej indeks
-% [max_value, max_index] = max(HS(:));
-% [y_max, x_max, r_max_index] = ind2sub(size(HS), max_index);
-% 
-% % Oblicz rzeczywisty promień na podstawie indeksu warstwy
-% r_max_real = r_min + r_max_index - 1;
-% 
-% % Wyrysuj koło na oryginalnym obrazie
-% figure(41)
-% imshow(img);
-% hold on;
-% viscircles([x_max, y_max], r_max_real, 'EdgeColor', 'r');
-% hold off;
-
 
 figure(31)
-% mesh(HS(:,:,r_max_index))
-imagesc(HS(:,:,r_max_index))
+mesh(HS(:,:,r_max_index))
+% imagesc(HS(:,:,r_max_index))
 
 
 
