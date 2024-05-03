@@ -1,4 +1,4 @@
-function [outImage, shift] = detect_edges(inImage, filter_len, rgb2gray_true)
+function [outImage, shift] = detect_edges(inImage, filter_len, rgb2gray_true, sigma, filter_ratio)
 
     Gh = [-ones(1, filter_len), 0, ones(1, filter_len)];
     % Gh = [-1,-1,-1,-1,0,1,1,1,1];
@@ -12,8 +12,7 @@ function [outImage, shift] = detect_edges(inImage, filter_len, rgb2gray_true)
 
     img_gray = im2double(img_gray);
 
-    sigma = 12;
-    filtersize = 3 * sigma;
+    filtersize = filter_ratio * sigma;
     kernel = fspecial("gaussian", filtersize, sigma);
     image = imfilter(img_gray, kernel, 'conv', 'replicate');
 
@@ -34,13 +33,6 @@ function [outImage, shift] = detect_edges(inImage, filter_len, rgb2gray_true)
 
     % Obliczanie przesunięcia
     shift = [border_width, border_width];
-
-
-    % % Zmniejsz rozdzielczość
-    % if decrease_resolution
-    %     result = imresize(result, resize_factor);
-    %     shift = shift * resize_factor;
-    % end
 
     outImage = result;
 
