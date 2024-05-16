@@ -2,8 +2,8 @@ close all;
 clear all;
 
 % READ IMAGE
-% img = imread("OFTA/o_sr11.bmp");
-img = imread("images/artificial_eye.jpg");
+img = imread("OFTA/o_sr31.bmp");
+% img = imread("images/artificial_eye.jpg");
 % img = generate_Aeye(130, 130*0.3, 600, 400);
 if 0
     figure(11)
@@ -11,7 +11,7 @@ if 0
 end
 
 % DECREASE IMAGE RESOLUTION
-resolution_ratio = 1;
+resolution_ratio = 0.4;
 img_dec = decrease_resolution(img, resolution_ratio);
 if 0
     figure(12)
@@ -21,12 +21,14 @@ end
 % EDGE DETECTION
 filter_len = 4;
 rgb2gray = true;
-[img_edges, shift] = detect_edges(img_dec, filter_len, rgb2gray, 4, 3);
+sigma = 2;
+filter_ratio = 3;
+[img_edges, shift] = detect_edges(img_dec, filter_len, rgb2gray, sigma, filter_ratio);
 [rows, cols] = size(img_edges); % Get the size of the edge-detected image
 
 % CALCULATE TRANSFORM
-r_min = 134;
-r_max = 136;
+r_min = 105;
+r_max = 120;
 A = zeros(rows, cols, r_max - r_min + 1);
 
 % % Gaussian Filter (if needed)
@@ -40,7 +42,7 @@ V = img_edges;
 for x = 1:cols
     for y = 1:rows
         for r = r_min:r_max
-            for theta = 0:pi/180:2*pi-(pi/180)
+            for theta = 0:pi/45:2*pi-(pi/180)
                 % Calculate the center coordinates
                 xc = round(x - r * cos(theta));
                 yc = round(y - r * sin(theta));
@@ -70,3 +72,6 @@ title(['r=', num2str(r0), ', x=', num2str(x0), ', y=', num2str(y0)]);
 hold on;
 viscircles([x0, y0], r0, 'EdgeColor', 'r');
 hold off;
+
+% figure()
+% imshow(img_edges)
