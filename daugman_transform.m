@@ -1,7 +1,3 @@
-
-
-
-
 % function A = daugman_transform(img, r_min, r_max)
 %     [rows, cols] = size(img);
 %     A = zeros(rows, cols, r_max - r_min + 1);

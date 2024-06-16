@@ -2,11 +2,11 @@ close all;
 clear all;
 
 % READ IMAGE
-img = imread("OFTA/o_sr111.bmp");
+img = imread("OFTA/o_sr11.bmp");
 % img = imread("images/artificial_eye.jpg");
 % img = generate_Aeye(130, 130*0.3, 600, 400);
 
-if 0
+if 0 
     figure(11)
     imshow(img)
 end
@@ -14,7 +14,6 @@ end
 % DECREASE IMAGE RESOLUTION
 resolution_ratio = 0.5;
 img_dec = decrease_resolution(img, resolution_ratio);
-img_gray = rgb2gray(img_dec);
 if 0
     figure(12)
     imshow(img_dec)
@@ -27,9 +26,9 @@ rgb2gray = true;
 
 
 % FIND IRIS CIRCLE
-r_min = 120;
+r_min = 140;
 r_max = 170;
-threshold = 0.1;
+threshold = 0.2;
 HS_iris = hough_transform(img_edges, r_min, r_max, threshold);
 % HS_iris = hough_transform_worse(img_edges, r_min, r_max, threshold);
 % Display
@@ -40,10 +39,10 @@ X = X + shift(1);
 Y= Y + shift(2);
 
 figure()
-imshow(img_dec);
+imshow(img);
 title(['r=', num2str(R), ', x=', num2str(X), ', y=', num2str(Y)]);
 hold on;
-viscircles([X, Y], R, 'EdgeColor', 'r');
+viscircles([X*2, Y*2], R*2, 'EdgeColor', 'r');
 % hold off;
 
 % FIND PUPIL CIRCLE
@@ -59,11 +58,10 @@ r = r_min + r_index - 1;
 x = x+ shift(1);
 y = y + shift(2);
 
-% figure(3)
-% imshow(img_dec);
+
 title(['r=', num2str(r), ', x=', num2str(x), ', y=', num2str(y)]);
 hold on;
-viscircles([x, y], r, 'EdgeColor', 'r');
+viscircles([x*2, y*2], r*2, 'EdgeColor', 'r');
 hold off;
 
 
@@ -73,20 +71,25 @@ hold off;
 % UNWRAP IRIS
 irisCenter = [X, Y];
 pupilCenter = [x, y];
-unwrapped_iris_image = unwrapIris_uncentered(img_dec, irisCenter, R, pupilCenter, r);
+unwrapped_iris_image = unwrap_iris(img_dec, irisCenter, R, pupilCenter, r, 0);
 
+
+% SPLIT THE UNWRAPPED IRIS IMAGE INTO STRIPS
+combined_strips_1 = split_strips_filter(unwrapped_iris_image);
+
+DPI = 72;
+% plot_frequency_spectrum(combined_strips_1, DPI)
 
 
 
 % ENCODE THE UNWRAPPED IRIS IMAGE
-[irisCode1_real, irisCode1_imag] = encodeIrisWithGabor(unwrapped_iris_image);
-[irisCode2_real, irisCode2_imag] = encodeIrisWithGabor(unwrapped_iris_image);
+[real_1, imag_1] = apply_gabor_filter(combined_strips_1);
 
 
 
 
-% COMPARE
-similarity = compareIrisCodes(irisCode1_real, irisCode1_imag, irisCode2_real, irisCode2_imag);
+% % COMPARE
+% similarity = compareIrisCodes(irisCode1_real, irisCode1_imag, irisCode2_real, irisCode2_imag);
 
 
 
@@ -95,18 +98,36 @@ similarity = compareIrisCodes(irisCode1_real, irisCode1_imag, irisCode2_real, ir
 show = 0;
 
 if show
-    figure(20)
-    subplot(2,2,1)
-    imshow(img_edges)
-    subplot(2,2,2)
-    mesh(img_edges)
+    % figure(20)
+    % % subplot(2,2,1)
+    % imshow(img_edges)
+    % title("Edges detected (image)")
+    % figure(21)
+    % % subplot(2,2,2)
+    % mesh(img_edges)
+    % title("Edges detected (mesh)")
+    % colormap("gray")
 end
 
 
 % DISPLAY HOUGH SPACE
 if show
-    subplot(2,2,4)
-    mesh(HS_iris(:,:,R_index))
-    subplot(2,2,3)
-    imagesc(HS_iris(:,:,R_index))
+    % figure(22)
+    % % subplot(2,2,4)
+    % imagesc(HS_iris(:,:,R_index))
+    % title("Hough space (image)")
+    % figure(24)
+    % % subplot(2,2,3)
+    % mesh(HS_iris(:,:,R_index))
+    % title("Hough space (mesh)")
+
+    % figure(25)
+    % % subplot(2,2,4)
+    % imagesc(HS_pupil(:,:,r_index))
+    % title("Hough space (image)")
+    % figure(26)
+    % % subplot(2,2,3)
+    % mesh(HS_pupil(:,:,r_index))
+    % title("Hough space (mesh")
+
 end
