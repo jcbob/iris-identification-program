@@ -3,5 +3,5 @@ This is a repository dedicated for my project titled 'Iris Identification Progra
 
 ---
 - Date begun: 04.04.2024
-- Date ended: -
+- Date ended: 10.07.2024
 - Author: Jakub Wolski
